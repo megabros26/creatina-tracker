@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracker de Creatina</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Creatina ⚡</h1>
+        
+        <!-- Botón principal -->
+        <button id="btn-tachar">Tachar toma de hoy</button>
+        
+        <!-- Racha -->
+        <div class="streak-container">
+            <p>🔥 Racha actual: <span id="racha">0</span> días</p>
+        </div>
+
+        <!-- Calendario -->
+        <h2>Este mes</h2>
+        <div id="calendario" class="calendar-grid">
+            <!-- JavaScript inyectará los días aquí -->
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
