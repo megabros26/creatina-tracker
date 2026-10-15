@@ -32,6 +32,32 @@
         <div id="calendario" class="calendar-grid">
             <!-- JavaScript inyectará los días aquí -->
         </div>
+                <!-- SECCIÓN NUEVA: Notificaciones y Agua -->
+        
+        <!-- Botón de notificaciones -->
+        <button onclick="pedirPermisoNotificaciones()" style="margin-top: 30px; font-size: 1rem; padding: 15px; background-color: #ff9800; color: white; border-radius: 15px;">
+            🔔 Activar Recordatorios
+        </button>
+
+        <div class="water-container">
+            <h2>Agua diaria (Meta: 2.5L)</h2>
+            
+            <!-- La botella visual -->
+            <div class="bottle">
+                <div class="water-fill" id="waterFill"></div>
+                <div class="water-text" id="waterText">0ml</div>
+            </div>
+
+            <!-- Botones de cantidades -->
+            <div class="water-buttons">
+                <button onclick="addWater(250)">250ml</button>
+                <button onclick="addWater(500)">500ml</button>
+                <button onclick="addWater(1000)">1L</button>
+                <button onclick="addWater(1500)">1.5L</button>
+                <button onclick="addCustomWater()" style="background-color: #333; grid-column: span 2;">Personalizado</button>
+            </div>
+        </div>
+
     </div>
 
     <script src="app.js"></script>
