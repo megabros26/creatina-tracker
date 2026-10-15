@@ -103,3 +103,58 @@ function actualizarUI() {
 
 // Iniciar app
 actualizarUI();
+
+// --- LÓGICA DE NOTIFICACIONES ---
+function pedirPermisoNotificaciones() {
+    if (!("Notification" in window)) {
+        alert("Tu navegador o dispositivo no soporta notificaciones web.");
+        return;
+    }
+    Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+            new Notification("¡Permiso concedido!", {
+                body: "Te recordaré tomar el agua y la creatina.",
+                icon: "icono.jpeg"
+            });
+        } else {
+            alert("Permiso denegado. Puedes activarlo en los ajustes del iPhone.");
+        }
+    });
+}
+
+// --- LÓGICA DEL AGUA ---
+const WATER_GOAL = 2500; 
+
+const today = obtenerFechaDeHoy(); 
+const savedDate = localStorage.getItem('waterDate');
+
+if (savedDate !== today) {
+    localStorage.setItem('waterAmount', 0); 
+    localStorage.setItem('waterDate', today);
+}
+
+let currentWater = parseInt(localStorage.getItem('waterAmount')) || 0;
+
+function updateBottle() {
+    const fillPercent = Math.min((currentWater / WATER_GOAL) * 100, 100);
+    
+    document.getElementById('waterFill').style.height = fillPercent + '%';
+    document.getElementById('waterText').innerText = currentWater + ' ml';
+    
+    localStorage.setItem('waterAmount', currentWater);
+}
+
+function addWater(amount) {
+    currentWater += amount;
+    updateBottle();
+}
+
+function addCustomWater() {
+    const amount = prompt("¿Cuántos mililitros has tomado?");
+    if (amount && !isNaN(amount) && amount > 0) {
+        addWater(parseInt(amount));
+    }
+}
+
+// Inicializar botella
+updateBottle();
