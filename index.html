@@ -2,63 +2,124 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tracker de Creatina</title>
-    
-    <!-- Configuración para comportarse como app nativa -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Creatina</title>
+    <meta name="description" content="Lleva la cuenta de los días que tomas creatina, tu racha y el agua que bebes.">
+    <meta name="theme-color" content="#0b0d10">
+
+    <!-- Comportamiento de app nativa (iPhone) -->
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="icono.jpeg"> 
-    <link rel="manifest" href="manifest.json"> 
-    
-    <!-- Estilos y fuentes -->
+    <meta name="apple-mobile-web-app-title" content="Creatina">
+    <link rel="apple-touch-icon" href="icon-180.png">
+    <link rel="icon" type="image/png" href="icon-192.png">
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1>Creatina ⚡</h1>
-        
-        <!-- Botón principal -->
-        <button id="btn-tachar">Tachar toma de hoy</button>
-        
-        <!-- Racha -->
-        <div class="streak-container">
-            <p>🔥 Racha actual: <span id="racha">0</span> días</p>
-        </div>
+    <main class="app">
+        <header class="header">
+            <p class="header-date" id="fecha-hoy"></p>
+            <h1>Creatina <span aria-hidden="true">⚡</span></h1>
+        </header>
+
+        <!-- Toma de hoy -->
+        <section class="card hero" aria-labelledby="titulo-hoy">
+            <h2 id="titulo-hoy" class="sr-only">Toma de hoy</h2>
+            <button id="btn-tachar" class="check-btn" aria-pressed="false">
+                <span class="check-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="44" height="44"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                <span class="check-label" id="btn-label">Tachar toma de hoy</span>
+            </button>
+            <p class="check-hint" id="btn-hint">Toca para marcar el día</p>
+
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-value" id="racha">0</span>
+                    <span class="stat-label">🔥 Racha</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="mejor-racha">0</span>
+                    <span class="stat-label">🏆 Mejor</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="total-mes">0</span>
+                    <span class="stat-label">📅 Este mes</span>
+                </div>
+            </div>
+        </section>
 
         <!-- Calendario -->
-        <h2>Este mes</h2>
-        <div id="calendario" class="calendar-grid">
-            <!-- JavaScript inyectará los días aquí -->
-        </div>
-                <!-- SECCIÓN NUEVA: Notificaciones y Agua -->
-        
-        <!-- Botón de notificaciones -->
-        <button onclick="pedirPermisoNotificaciones()" style="margin-top: 30px; font-size: 1rem; padding: 15px; background-color: #ff9800; color: white; border-radius: 15px;">
-            🔔 Activar Recordatorios
-        </button>
+        <section class="card" aria-labelledby="titulo-mes">
+            <div class="card-head">
+                <button class="icon-btn" id="mes-anterior" aria-label="Mes anterior">‹</button>
+                <h2 id="titulo-mes" class="card-title">Mes</h2>
+                <button class="icon-btn" id="mes-siguiente" aria-label="Mes siguiente">›</button>
+            </div>
+            <div class="weekdays" aria-hidden="true">
+                <span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span>S</span><span>D</span>
+            </div>
+            <div id="calendario" class="calendar-grid"></div>
+            <p class="card-foot">¿Se te olvidó marcar un día? Tócalo en el calendario.</p>
+        </section>
 
-        <div class="water-container">
-            <h2>Agua diaria (Meta: 2.5L)</h2>
-            
-            <!-- La botella visual -->
-            <div class="bottle">
-                <div class="water-fill" id="waterFill"></div>
-                <div class="water-text" id="waterText">0ml</div>
+        <!-- Agua -->
+        <section class="card" aria-labelledby="titulo-agua">
+            <div class="card-head">
+                <h2 id="titulo-agua" class="card-title">💧 Agua de hoy</h2>
+                <button class="text-btn" id="agua-deshacer" disabled>Deshacer</button>
             </div>
 
-            <!-- Botones de cantidades -->
+            <div class="water">
+                <div class="bottle" aria-hidden="true">
+                    <div class="bottle-cap"></div>
+                    <div class="bottle-body">
+                        <div class="water-fill" id="waterFill">
+                            <div class="wave"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="water-info">
+                    <p class="water-amount"><span id="waterText">0</span><small> ml</small></p>
+                    <p class="water-goal">de <span id="waterGoal">2.500</span> ml</p>
+                    <div class="progress" role="progressbar" aria-label="Progreso de agua" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="waterBar">
+                        <div class="progress-fill" id="waterBarFill"></div>
+                    </div>
+                    <p class="water-status" id="waterStatus">¡A por ello!</p>
+                </div>
+            </div>
+
             <div class="water-buttons">
-                <button onclick="addWater(250)">250ml</button>
-                <button onclick="addWater(500)">500ml</button>
-                <button onclick="addWater(1000)">1L</button>
-                <button onclick="addWater(1500)">1.5L</button>
-                <button onclick="addCustomWater()" style="background-color: #333; grid-column: span 2;">Personalizado</button>
+                <button class="chip" data-ml="250">+250 ml</button>
+                <button class="chip" data-ml="500">+500 ml</button>
+                <button class="chip" data-ml="1000">+1 L</button>
+                <button class="chip" data-ml="1500">+1,5 L</button>
             </div>
-        </div>
+            <form class="custom-water" id="form-agua">
+                <input type="number" id="agua-custom" inputmode="numeric" min="1" max="5000" step="1" placeholder="Otra cantidad (ml)" aria-label="Cantidad personalizada en mililitros">
+                <button type="submit" class="chip chip-solid">Añadir</button>
+            </form>
+        </section>
 
-    </div>
+        <!-- Recordatorio -->
+        <section class="card" aria-labelledby="titulo-recordatorio">
+            <h2 id="titulo-recordatorio" class="card-title">🔔 Recordatorio diario</h2>
+            <p class="card-text">Crea un aviso diario en el calendario del móvil. Funciona aunque la app esté cerrada.</p>
+            <div class="reminder">
+                <label for="hora-recordatorio" class="sr-only">Hora del recordatorio</label>
+                <input type="time" id="hora-recordatorio" value="09:00">
+                <button class="chip chip-solid" id="btn-recordatorio">Añadir al calendario</button>
+            </div>
+        </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script src="app.js"></script>
 </body>
